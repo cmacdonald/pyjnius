@@ -478,6 +478,17 @@ cdef jobject convert_python_to_jobject(JNIEnv *j_env, definition, obj) except *:
         elif isinstance(obj, base_string) and jstringy_arg(definition):
             return convert_pystr_to_java(j_env, to_unicode(obj))
 
+        # bool type
+        elif isinstance(obj, bool) and \
+                definition in (
+                    'Ljava/lang/Boolean;',
+                    'Ljava/lang/Object;'):
+            j_ret[0].i = obj
+            retclass = j_env[0].FindClass(j_env, 'java/lang/Boolean')
+            retmidinit = j_env[0].GetMethodID(j_env, retclass, '<init>', '(Z)V')
+            retobject = j_env[0].NewObjectA(j_env, retclass, retmidinit, j_ret)
+            return retobject
+
         # numeric types
         elif isinstance(obj, (int, long)) and \
                 definition in (
