@@ -16,7 +16,7 @@ jobs:
         java:
           - '8'
           - '11'
-          - '23'
+          - '24'
         os:
           # macos-latest (ATM macos-14) runs on Apple Silicon,
           # macos-13 runs on Intel
